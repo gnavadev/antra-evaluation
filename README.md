@@ -45,11 +45,3 @@ implementation of another.
 
 Data flows one direction: the view emits user intents to the controller, the
 controller updates the store, and the store notifies the view to re-render.
-
-## A note on local vs. synced tasks
-
-DummyJSON returns id `151` for every newly added task and 404s on requests to
-ids it never issued. Tasks fetched from the server are marked `synced` and are
-updated/deleted through the API; tasks added in the browser are kept local and
-update state directly, which keeps the app correct without firing requests that
-are guaranteed to fail.
