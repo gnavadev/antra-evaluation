@@ -1,0 +1,346 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@400;500;600;700&display=swap");
+
+:root {
+  --sponge: #ffe600;
+  --sponge-deep: #f2c200;
+  --sponge-hole: rgba(196, 150, 0, 0.38);
+  --ocean-surface: #bdebff;
+  --ocean: #1ca7ec;
+  --ocean-deep: #0b6fa4;
+  --sand: #f4e2b8;
+  --sand-deep: #e3c987;
+  --krab-red: #e8483b;
+  --patrick-pink: #ff74b1;
+  --seaweed: #2bb673;
+  --ink: #2a2118;
+  --ink-soft: #6c5b3e;
+  --white: #ffffff;
+  --radius: 18px;
+  --shadow: 0 6px 0 rgba(11, 64, 96, 0.18), 0 14px 28px rgba(11, 64, 96, 0.22);
+  --outline: 3px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Fredoka", system-ui, sans-serif;
+  line-height: 1.5;
+  background:
+    linear-gradient(180deg, var(--ocean-surface) 0%, var(--ocean) 55%, var(--ocean-deep) 100%)
+      fixed;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.5) 0 4px, transparent 5px),
+    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.45) 0 6px, transparent 7px),
+    radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.4) 0 3px, transparent 4px),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.4) 0 5px, transparent 6px),
+    radial-gradient(circle at 55% 15%, rgba(255, 255, 255, 0.35) 0 3px, transparent 4px);
+  background-size: 280px 280px, 360px 360px, 200px 200px, 320px 320px, 240px 240px;
+  animation: bubble-rise 14s linear infinite;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70px;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--sand);
+  border-top: 6px dashed var(--sand-deep);
+}
+
+@keyframes bubble-rise {
+  from {
+    background-position:
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      0 -560px,
+      0 -720px,
+      0 -400px,
+      0 -640px,
+      0 -480px;
+  }
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 48px 20px 110px;
+}
+
+.app__header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.app__title {
+  font-family: "Bangers", "Fredoka", cursive;
+  font-size: 3.4rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin: 0;
+  color: var(--sponge);
+  text-shadow:
+    var(--outline) 0 0 var(--ink),
+    calc(-1 * var(--outline)) 0 0 var(--ink),
+    0 var(--outline) 0 var(--ink),
+    0 calc(-1 * var(--outline)) 0 var(--ink),
+    var(--outline) var(--outline) 0 var(--ink),
+    calc(-1 * var(--outline)) var(--outline) 0 var(--ink),
+    var(--outline) calc(-1 * var(--outline)) 0 var(--ink),
+    calc(-1 * var(--outline)) calc(-1 * var(--outline)) 0 var(--ink),
+    0 8px 0 rgba(0, 0, 0, 0.25);
+}
+
+.app__subtitle {
+  margin: 10px 0 0;
+  color: var(--white);
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(11, 64, 96, 0.5);
+}
+
+.composer {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.composer__input {
+  flex: 1;
+  padding: 14px 16px;
+  border: var(--outline) solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--white);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--ink);
+  box-shadow: 0 4px 0 rgba(11, 64, 96, 0.18);
+}
+
+.composer__input::placeholder {
+  color: var(--ink-soft);
+}
+
+.composer__input:focus-visible {
+  outline: none;
+  border-color: var(--ocean);
+  box-shadow: 0 0 0 4px rgba(28, 167, 236, 0.4);
+}
+
+.status {
+  margin: 0 0 18px;
+  padding: 12px 16px;
+  border: var(--outline) solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--krab-red);
+  color: var(--white);
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 4px 0 rgba(11, 64, 96, 0.18);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.board__column {
+  position: relative;
+  border: var(--outline) solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  background-color: var(--sponge);
+  background-image:
+    radial-gradient(circle, var(--sponge-hole) 0 5px, transparent 6px),
+    radial-gradient(circle, var(--sponge-hole) 0 3px, transparent 4px);
+  background-size:
+    44px 44px,
+    44px 44px;
+  background-position:
+    0 0,
+    22px 22px;
+}
+
+.board__column:nth-child(2) {
+  background-color: var(--ocean-surface);
+  background-image:
+    radial-gradient(circle, rgba(11, 111, 164, 0.18) 0 5px, transparent 6px),
+    radial-gradient(circle, rgba(11, 111, 164, 0.18) 0 3px, transparent 4px);
+}
+
+.board__heading {
+  margin: 0 0 16px;
+  font-family: "Bangers", "Fredoka", cursive;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: var(--ink);
+  background: var(--white);
+  border: var(--outline) solid var(--ink);
+  border-radius: 999px;
+  padding: 4px 0;
+  box-shadow: 0 3px 0 rgba(11, 64, 96, 0.18);
+}
+
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: var(--outline) solid var(--ink);
+  border-radius: 14px;
+  background: var(--white);
+  box-shadow: 0 4px 0 rgba(11, 64, 96, 0.16);
+}
+
+.todo-title {
+  flex: 1;
+  word-break: break-word;
+  font-weight: 500;
+}
+
+.todo-title--done {
+  color: var(--ink-soft);
+  text-decoration: line-through wavy var(--krab-red);
+}
+
+.todo-edit-input {
+  flex: 1;
+  padding: 9px 12px;
+  border: var(--outline) solid var(--ocean);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--ink);
+}
+
+.todo-edit-input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(28, 167, 236, 0.4);
+}
+
+.todo-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.todo-empty {
+  padding: 18px 12px;
+  border: var(--outline) dashed var(--ink);
+  border-radius: 14px;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.btn {
+  padding: 9px 16px;
+  border: var(--outline) solid var(--ink);
+  border-radius: 12px;
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(11, 64, 96, 0.25);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    filter 0.15s ease;
+}
+
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+.btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgba(11, 64, 96, 0.25);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.9),
+    0 0 0 7px var(--ocean);
+}
+
+.btn--primary {
+  background: var(--sponge);
+  color: var(--ink);
+}
+
+.btn--ghost {
+  background: var(--white);
+  color: var(--ink);
+}
+
+.btn--danger {
+  background: var(--krab-red);
+  color: var(--white);
+}
+
+.btn--toggle {
+  background: var(--ocean);
+  color: var(--white);
+  font-size: 1.05rem;
+  min-width: 42px;
+}
+
+@media (max-width: 640px) {
+  .board {
+    grid-template-columns: 1fr;
+  }
+
+  .app__title {
+    font-size: 2.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+
+  .btn {
+    transition: none;
+  }
+}
