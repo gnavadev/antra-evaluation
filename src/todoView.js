@@ -108,8 +108,8 @@ export function createTodoView() {
     const pending = todos.filter((todo) => !todo.completed);
     const completed = todos.filter((todo) => todo.completed);
 
-    renderList(pendingList, pending, "Nothing pending. Add a task above.");
-    renderList(completedList, completed, "No completed tasks yet.");
+    renderList(pendingList, pending, "No pending tasks");
+    renderList(completedList, completed, "No completed tasks");
     restorePendingFocus();
   }
 
@@ -131,20 +131,31 @@ export function createTodoView() {
   }
 
   function createTodoItem(todo) {
-    const isEditing = editingIds.has(todo.id);
     const item = document.createElement("li");
     item.className = "todo-item";
     item.dataset.id = String(todo.id);
-    item.append(
-      isEditing ? createEditField(todo) : createTitle(todo),
-      createActions(todo, isEditing),
-    );
+
+    if (editingIds.has(todo.id)) {
+      item.append(createEditField(todo), createEditActions());
+    } else if (todo.completed) {
+      item.append(
+        createActionGroup([createToggleButton(todo)]),
+        createTitle(todo),
+        createActionGroup([createEditButton(), createDeleteButton()]),
+      );
+    } else {
+      item.append(
+        createTitle(todo),
+        createActionGroup([createEditButton(), createDeleteButton(), createToggleButton(todo)]),
+      );
+    }
+
     return item;
   }
 
   function createTitle(todo) {
     const title = document.createElement("span");
-    title.className = todo.completed ? "todo-title todo-title--done" : "todo-title";
+    title.className = "todo-title";
     title.textContent = todo.todo;
     return title;
   }
@@ -159,41 +170,43 @@ export function createTodoView() {
     return field;
   }
 
-  function createActions(todo, isEditing) {
-    const actions = document.createElement("div");
-    actions.className = "todo-actions";
+  function createActionGroup(buttons) {
+    const group = document.createElement("div");
+    group.className = "todo-actions";
+    buttons.forEach((button) => group.append(button));
+    return group;
+  }
 
-    if (isEditing) {
-      actions.append(
-        createButton(ACTION.SAVE, "Save", "btn btn--primary"),
-        createButton(ACTION.CANCEL, "Cancel", "btn btn--ghost"),
-      );
-      return actions;
-    }
+  function createEditButton() {
+    return createIconButton(ACTION.EDIT, "\u270E", "icon-btn icon-btn--edit", "Edit task");
+  }
 
-    actions.append(
-      createToggleButton(todo),
-      createButton(ACTION.EDIT, "Edit", "btn btn--ghost"),
-      createButton(ACTION.DELETE, "Delete", "btn btn--danger"),
-    );
-    return actions;
+  function createDeleteButton() {
+    return createIconButton(ACTION.DELETE, "\u2715", "icon-btn icon-btn--delete", "Delete task");
   }
 
   function createToggleButton(todo) {
-    const label = todo.completed ? "Move to pending" : "Mark complete";
-    const symbol = todo.completed ? "\u21A9" : "\u2713";
-    const button = createButton(ACTION.TOGGLE, symbol, "btn btn--toggle");
-    button.setAttribute("aria-label", label);
-    button.title = label;
-    return button;
+    if (todo.completed) {
+      return createIconButton(ACTION.TOGGLE, "\u2190", "icon-btn icon-btn--move", "Move to pending");
+    }
+    return createIconButton(ACTION.TOGGLE, "\u2192", "icon-btn icon-btn--move", "Mark complete");
   }
 
-  function createButton(action, text, className) {
+  function createEditActions() {
+    return createActionGroup([
+      createIconButton(ACTION.SAVE, "\u2713", "icon-btn icon-btn--save", "Save changes"),
+      createIconButton(ACTION.CANCEL, "\u2715", "icon-btn icon-btn--cancel", "Cancel editing"),
+    ]);
+  }
+
+  function createIconButton(action, glyph, className, label) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = className;
     button.dataset.action = action;
-    button.textContent = text;
+    button.textContent = glyph;
+    button.setAttribute("aria-label", label);
+    button.title = label;
     return button;
   }
 

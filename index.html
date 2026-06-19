@@ -4,42 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo List</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="app">
-      <header class="app__header">
-        <h1 class="app__title">Todo List</h1>
-        <p class="app__subtitle">Track what's pending and what's done.</p>
-      </header>
-
       <form class="composer" data-todo-form>
         <input
           class="composer__input"
           type="text"
-          placeholder="What needs to be done?"
+          placeholder="Add a task"
           autocomplete="off"
           data-todo-input
         />
-        <button class="btn btn--primary" type="submit">Add task</button>
+        <button class="submit-btn" type="submit">submit</button>
       </form>
 
       <p class="status" role="alert" data-status hidden></p>
 
       <div class="board">
         <section class="board__column" aria-labelledby="pending-heading">
-          <h2 class="board__heading" id="pending-heading">Pending</h2>
+          <h2 class="board__heading" id="pending-heading">Pending Tasks</h2>
           <ul class="todo-list" data-pending-list></ul>
         </section>
 
         <section class="board__column" aria-labelledby="completed-heading">
-          <h2 class="board__heading" id="completed-heading">Completed</h2>
+          <h2 class="board__heading" id="completed-heading">Completed Tasks</h2>
           <ul class="todo-list" data-completed-list></ul>
         </section>
       </div>
